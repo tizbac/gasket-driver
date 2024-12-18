@@ -1373,7 +1373,11 @@ static long gasket_ioctl(struct file *filp, uint cmd, ulong arg)
 /* File operations for all Gasket devices. */
 static const struct file_operations gasket_file_ops = {
 	.owner = THIS_MODULE,
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6,11,0)
+	.llseek = NULL,
+#else
 	.llseek = no_llseek,
+#endif
 	.mmap = gasket_mmap,
 	.open = gasket_open,
 	.release = gasket_release,
